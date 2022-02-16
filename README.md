@@ -6,7 +6,7 @@ Docker-compose enviroment for Wordpress plugin development
 > chown USER:USER myplugin\
 > mv myplugin.php myplugin
 
-## Wordpress Login
+## Wordpress Setup
 http://localhost:8080
 
 ## PHPMyAdmin Login
