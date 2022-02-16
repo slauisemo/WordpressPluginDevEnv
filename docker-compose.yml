@@ -1,0 +1,46 @@
+version: "3.2"
+
+services:
+  wordpress:
+    image: wordpress:${wpversion}
+    volumes:
+      - ./myplugin:/var/www/html/wp-content/plugins/myplugin
+      - ./wpfiles:/var/www/html
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: mysqldb:${mysqlport}
+      WORDPRESS_DB_USER: ${mysqluser}
+      WORDPRESS_DB_NAME: ${wpdb}
+      WORDPRESS_DB_PASSWORD: ${mysqlpass}
+      WORDPRESS_DEBUG: 1
+    ports:
+      - ${wplocalport}:80
+    depends_on:
+      - mysqldb
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: mysqldb
+      PMA_PORT: ${mysqlport}
+      PMA_USER: ${mysqluser}
+      PMA_PASSWORD: ${mysqlpass}
+    ports:
+      - ${phpmyadminlocalport}:80
+    depends_on:
+      - mysqldb
+
+  mysqldb:
+    image: mysql
+    volumes:
+      - ./dbfiles:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_USER: ${mysqluser}
+      MYSQL_DATABASE: ${wpdb}
+      MYSQL_PASSWORD: ${mysqlpass}
+      MYSQL_ROOT_PASSWORD: ${mysqlpass}
+
+volumes:
+  wpfiles: {}
+  dbfiles: {}
